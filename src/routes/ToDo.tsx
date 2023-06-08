@@ -10,8 +10,9 @@ interface Itodo {
 }
 const ToDo = () => {
   const [newTodo, setNewTodo] = useState("");
+  const [editTodo, setEditTodo] = useState("");
   const [todos, setTodos] = useState<Itodo[]>([]);
-  const [isChecked, setIsChecked] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(-1);
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
   useEffect(() => {
@@ -65,12 +66,25 @@ const ToDo = () => {
     );
     const data = await response.json();
   };
+
+  const deleteTodo = async (currentTodo: Itodo) => {
+    const response = await fetch(
+      `https://www.pre-onboarding-selection-task.shop/todos/${currentTodo.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    renderTodos();
+  };
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setNewTodo(value);
   };
   const handleCheckboxChange = (currentTodo: Itodo) => {
-    // setIsChecked(event.target.checked);
     setTodos((prevTodos) =>
       prevTodos.map((todo) =>
         todo.id === currentTodo.id
@@ -97,16 +111,56 @@ const ToDo = () => {
     );
     const data = await response.json();
     console.log(data);
+    setNewTodo("");
     renderTodos();
+  };
+  const handleDelete = (currentTodo: Itodo) => {
+    deleteTodo(currentTodo);
+  };
+  const handleEdit = (index: number, currentTodo: Itodo) => {
+    setEditingIndex(index);
+    setEditTodo(currentTodo.todo);
+  };
+  const handleCancle = () => {
+    setEditingIndex(-1);
+  };
+  const handleInputChange = async (currentTodo: Itodo) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === currentTodo.id ? { ...todo, todo: editTodo } : todo
+      )
+    );
+    const response = await fetch(
+      `https://www.pre-onboarding-selection-task.shop/todos/${currentTodo.id}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          todo: editTodo,
+          isCompleted: currentTodo.isCompleted,
+        }),
+      }
+    );
+    setEditingIndex(-1);
+  };
+  const onEditChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEditTodo(event.target.value);
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input data-testid="new-todo-input" onChange={handleChange} />
+        <input
+          data-testid="new-todo-input"
+          value={newTodo}
+          onChange={handleChange}
+        />
         <button data-testid="new-todo-add-button">추가</button>
       </form>
-      {todos.map((todo: Itodo) => (
+      {todos.map((todo: Itodo, index) => (
         <li key={todo.id}>
           <label>
             <input
@@ -114,7 +168,41 @@ const ToDo = () => {
               checked={todo.isCompleted}
               onChange={() => handleCheckboxChange(todo)}
             />
-            <span>{todo.todo}</span>
+            {editingIndex === index ? (
+              <>
+                <input
+                  data-testid="modify-input"
+                  value={editTodo}
+                  onChange={onEditChange}
+                />
+                <button
+                  data-testid="submit-button"
+                  onClick={() => handleInputChange(todo)}
+                >
+                  제출
+                </button>
+                <button data-testid="cancel-button" onClick={handleCancle}>
+                  취소
+                </button>
+              </>
+            ) : (
+              <>
+                <span>{todo.todo}</span>
+
+                <button
+                  data-testid="modify-button"
+                  onClick={() => handleEdit(index, todo)}
+                >
+                  수정
+                </button>
+                <button
+                  data-testid="delete-button"
+                  onClick={() => handleDelete(todo)}
+                >
+                  삭제
+                </button>
+              </>
+            )}
           </label>
         </li>
       ))}
