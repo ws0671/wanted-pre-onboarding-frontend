@@ -10,7 +10,8 @@ interface Itodo {
 }
 const ToDo = () => {
   const [newTodo, setNewTodo] = useState("");
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState<Itodo[]>([]);
+  const [isChecked, setIsChecked] = useState(false);
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
   useEffect(() => {
@@ -46,9 +47,38 @@ const ToDo = () => {
     const data = await response.json();
     setTodos(data);
   };
+
+  const updateTodo = async (currentTodo: Itodo) => {
+    const response = await fetch(
+      `https://www.pre-onboarding-selection-task.shop/todos/${currentTodo.id}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          todo: currentTodo.todo,
+          isCompleted: !currentTodo.isCompleted,
+        }),
+      }
+    );
+    const data = await response.json();
+  };
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setNewTodo(value);
+  };
+  const handleCheckboxChange = (currentTodo: Itodo) => {
+    // setIsChecked(event.target.checked);
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === currentTodo.id
+          ? { ...todo, isCompleted: !todo.isCompleted }
+          : todo
+      )
+    );
+    updateTodo(currentTodo);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -79,7 +109,11 @@ const ToDo = () => {
       {todos.map((todo: Itodo) => (
         <li key={todo.id}>
           <label>
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={todo.isCompleted}
+              onChange={() => handleCheckboxChange(todo)}
+            />
             <span>{todo.todo}</span>
           </label>
         </li>
