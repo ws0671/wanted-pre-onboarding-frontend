@@ -7,13 +7,13 @@ const Home = () => {
           TODO STORY
         </h1>
         <Link
-          className="absolute left-3 bottom-3 hover:text-yellow-400 text-white"
+          className="absolute left-3 bottom-3 hover:text-yellow-200 text-white"
           to="/signup"
         >
           회원가입 하러 가기
         </Link>
         <Link
-          className="absolute right-3 bottom-3 hover:text-yellow-400 text-white"
+          className="absolute right-3 bottom-3 hover:text-yellow-200 text-white"
           to="/signin"
         >
           로그인 하러 가기

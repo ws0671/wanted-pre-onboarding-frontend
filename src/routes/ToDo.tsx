@@ -1,6 +1,5 @@
-import { type } from "os";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 interface Itodo {
   id: number;
@@ -147,62 +146,93 @@ const ToDo = () => {
     setEditTodo(event.target.value);
   };
 
-  return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          data-testid="new-todo-input"
-          value={newTodo}
-          onChange={handleChange}
-        />
-        <button data-testid="new-todo-add-button">추가</button>
-      </form>
-      {todos.map((todo: Itodo, index) => (
-        <li key={todo.id}>
-          <label>
-            <input
-              type="checkbox"
-              checked={todo.isCompleted}
-              onChange={() => handleCheckboxChange(todo)}
-            />
-            {editingIndex === index ? (
-              <>
-                <input
-                  data-testid="modify-input"
-                  value={editTodo}
-                  onChange={onEditChange}
-                />
-                <button
-                  data-testid="submit-button"
-                  onClick={() => handleInputChange(todo)}
-                >
-                  제출
-                </button>
-                <button data-testid="cancel-button" onClick={handleCancle}>
-                  취소
-                </button>
-              </>
-            ) : (
-              <>
-                <span>{todo.todo}</span>
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    todo: Itodo
+  ) => {
+    // event.preventDefault();
+    if (event.key === "Enter") {
+      handleInputChange(todo);
+    }
+  };
 
-                <button
-                  data-testid="modify-button"
-                  onClick={() => handleEdit(index, todo)}
-                >
-                  수정
-                </button>
-                <button
-                  data-testid="delete-button"
-                  onClick={() => handleDelete(todo)}
-                >
-                  삭제
-                </button>
-              </>
-            )}
-          </label>
-        </li>
-      ))}
+  return (
+    <div className="relative bg-blue-500 mx-auto w-[50vw] mt-[100px] rounded-lg pb-5">
+      <h1 className="hover:text-pink-400 text-white text-center font-bold text-4xl pt-5">
+        <Link to="/"> TODO STORY</Link>
+      </h1>
+      <div className="mx-auto mt-[30px] w-[70%]">
+        <form className="mb-5" onSubmit={handleSubmit}>
+          <input
+            data-testid="new-todo-input"
+            value={newTodo}
+            className=" p-2 border border-blue-500 rounded-md"
+            onChange={handleChange}
+          />
+          <button
+            className="rounded-md ml-5 p-2 text-white hover:text-black hover:bg-yellow-200 bg-sky-500"
+            data-testid="new-todo-add-button"
+          >
+            추가
+          </button>
+        </form>
+
+        {todos.map((todo: Itodo, index) => (
+          <li key={todo.id} className="relative mb-2">
+            <label>
+              <input
+                type="checkbox"
+                checked={todo.isCompleted}
+                onChange={() => handleCheckboxChange(todo)}
+              />
+              {editingIndex === index ? (
+                <>
+                  <input
+                    className="rounded-md"
+                    data-testid="modify-input"
+                    value={editTodo}
+                    onChange={onEditChange}
+                    onKeyDown={(event) => handleKeyDown(event, todo)}
+                  />
+                  <button
+                    className="absolute right-10 text-white p-0.5 bg-sky-500 rounded-md hover:text-black hover:bg-yellow-200"
+                    data-testid="submit-button"
+                    onClick={() => handleInputChange(todo)}
+                  >
+                    제출
+                  </button>
+                  <button
+                    className="absolute right-0 text-white p-0.5 bg-sky-500 rounded-md hover:text-black hover:bg-yellow-200"
+                    data-testid="cancel-button"
+                    onClick={handleCancle}
+                  >
+                    취소
+                  </button>
+                </>
+              ) : (
+                <>
+                  <span className="pl-2">{todo.todo}</span>
+
+                  <button
+                    className="absolute right-10 text-white p-0.5 bg-sky-500 rounded-md hover:text-black hover:bg-yellow-200"
+                    data-testid="modify-button"
+                    onClick={() => handleEdit(index, todo)}
+                  >
+                    수정
+                  </button>
+                  <button
+                    className="absolute right-0 text-white p-0.5 bg-sky-500 rounded-md hover:text-black hover:bg-yellow-200"
+                    data-testid="delete-button"
+                    onClick={() => handleDelete(todo)}
+                  >
+                    삭제
+                  </button>
+                </>
+              )}
+            </label>
+          </li>
+        ))}
+      </div>
     </div>
   );
 };
