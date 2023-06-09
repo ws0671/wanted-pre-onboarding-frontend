@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [edisabled, setEdisabled] = useState(true);
-  const [pdisabled, setPdisabled] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,19 +13,9 @@ const SignIn = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     if (name === "email") {
-      if (value.includes("@")) {
-        setEmail(value);
-        setEdisabled(false);
-      } else {
-        setEdisabled(true);
-      }
+      setEmail(value);
     } else if (name === "password") {
-      if (value.length >= 8) {
-        setPassword(value);
-        setPdisabled(false);
-      } else {
-        setPdisabled(true);
-      }
+      setPassword(value);
     }
   };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -50,21 +38,44 @@ const SignIn = () => {
     }
   };
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="email" data-testid="email-input" onChange={handleChange} />
-      <input
-        name="password"
-        data-testid="password-input"
-        onChange={handleChange}
-      />
-      {edisabled || pdisabled ? (
-        <button disabled data-testid="signin-button">
+    <div className="relative rounded-lg mt-[100px] mx-auto w-[50vw]   h-[40vh] bg-blue-500">
+      <h1 className="hover:text-pink-400 text-white text-center font-bold text-4xl pt-5">
+        <Link to="/"> TODO STORY</Link>
+      </h1>
+      <form
+        className="mt-[50px] flex flex-col items-center justify-center"
+        onSubmit={handleSubmit}
+      >
+        <div className="w-[70%] flex flex-col space-y-3">
+          <input
+            className=" p-2 placeholder:italic border border-blue-500 rounded-md"
+            name="email"
+            placeholder="이메일"
+            data-testid="email-input"
+            onChange={handleChange}
+          />
+          <input
+            className=" p-2 placeholder:italic border border-blue-500 rounded-md"
+            name="password"
+            placeholder="비밀번호"
+            data-testid="password-input"
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mt-3 italic text-teal-500">
+          회원이 아니에요👉
+          <span className="pl-2 hover:text-yellow-200">
+            <Link to="/signup">회원가입 하러 가기</Link>
+          </span>
+        </div>
+        <button
+          className="text-white absolute bottom-[60px] text-xl font-bold hover:text-yellow-200"
+          data-testid="signin-button"
+        >
           로그인
         </button>
-      ) : (
-        <button data-testid="signin-button">로그인</button>
-      )}
-    </form>
+      </form>
+    </div>
   );
 };
 export default SignIn;

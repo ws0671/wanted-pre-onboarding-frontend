@@ -29,7 +29,6 @@ const ToDo = () => {
       );
       const data = await response.json();
       setTodos(data);
-      console.log(data);
     };
     getTodos();
   }, []);
@@ -64,7 +63,6 @@ const ToDo = () => {
         }),
       }
     );
-    const data = await response.json();
   };
 
   const deleteTodo = async (currentTodo: Itodo) => {
@@ -110,7 +108,6 @@ const ToDo = () => {
       }
     );
     const data = await response.json();
-    console.log(data);
     setNewTodo("");
     renderTodos();
   };

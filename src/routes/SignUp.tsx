@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,21 +47,49 @@ const SignUp = () => {
     }
   };
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="email" data-testid="email-input" onChange={handleChange} />
-      <input
-        name="password"
-        data-testid="password-input"
-        onChange={handleChange}
-      />
-      {edisabled || pdisabled ? (
-        <button disabled data-testid="signup-button">
+    <div className="relative rounded-lg mt-[100px] mx-auto w-[50vw]   h-[40vh] bg-blue-500">
+      <h1 className="hover:text-pink-400 text-white text-center font-bold text-4xl pt-5">
+        <Link to="/"> TODO STORY</Link>
+      </h1>
+      <form
+        className=" mt-[50px] flex flex-col items-center justify-center"
+        onSubmit={handleSubmit}
+      >
+        <div className="w-[70%] flex flex-col space-y-3">
+          <input
+            className=" p-2 placeholder:italic border border-blue-500 rounded-md"
+            placeholder="이메일을 입력하세요(@포함)"
+            name="email"
+            data-testid="email-input"
+            onChange={handleChange}
+          />
+          <input
+            className=" p-2 placeholder:italic border border-blue-500 rounded-md"
+            placeholder="비밀번호를 입력하세요(8자리 이상)"
+            name="password"
+            data-testid="password-input"
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mt-3 italic text-teal-500">
+          아이디가 이미 있어요👉
+          <span className="pl-2 hover:text-yellow-200">
+            <Link to="/signin">로그인 하러 가기</Link>
+          </span>
+        </div>
+        <button
+          className={
+            edisabled || pdisabled
+              ? "text-teal-500 absolute bottom-[60px] text-xl font-bold "
+              : "text-white absolute bottom-[60px] text-xl font-bold hover:text-yellow-200"
+          }
+          disabled={edisabled || pdisabled}
+          data-testid="signup-button"
+        >
           회원가입
         </button>
-      ) : (
-        <button data-testid="signup-button">회원가입</button>
-      )}
-    </form>
+      </form>
+    </div>
   );
 };
 export default SignUp;
