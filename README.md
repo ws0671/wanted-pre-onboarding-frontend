@@ -1,3 +1,3 @@
 - 이름: 이영민
 - 프로젝트 실행 방법: git clone후에 `npm install & npm start` 명령어로 실행합니다.
-- 배포 링크: https://ws0671.github.io/wanted-pre-onboarding-frontend
+- 배포 링크: https://wanted-pre-onboarding-frontend-pi-eosin.vercel.app/

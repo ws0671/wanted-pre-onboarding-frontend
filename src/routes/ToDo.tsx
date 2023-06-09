@@ -178,7 +178,7 @@ const ToDo = () => {
         </form>
 
         {todos.map((todo: Itodo, index) => (
-          <li key={todo.id} className="relative mb-2">
+          <li key={todo.id} className="relative mb-2 text-white">
             <label>
               <input
                 type="checkbox"
