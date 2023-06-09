@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <>
-      <div className="relative bg-blue-500 mx-auto w-[50vw] mt-[100px] rounded-lg h-[40vh]">
+      <div className="relative bg-blue-500 mx-auto w-[500px] mt-[100px] rounded-lg h-[350px]">
         <h1 className="hover:text-pink-400 text-white text-center font-bold text-4xl pt-5">
           TODO STORY
         </h1>

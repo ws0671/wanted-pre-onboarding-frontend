@@ -157,7 +157,7 @@ const ToDo = () => {
   };
 
   return (
-    <div className="relative bg-blue-500 mx-auto w-[50vw] mt-[100px] rounded-lg pb-5">
+    <div className="relative bg-blue-500 mx-auto w-[500px] mt-[100px] rounded-lg pb-5">
       <h1 className="hover:text-pink-400 text-white text-center font-bold text-4xl pt-5">
         <Link to="/"> TODO STORY</Link>
       </h1>
@@ -166,7 +166,7 @@ const ToDo = () => {
           <input
             data-testid="new-todo-input"
             value={newTodo}
-            className=" p-2 border border-blue-500 rounded-md"
+            className=" p-2 w-[80%] border border-blue-500 rounded-md"
             onChange={handleChange}
           />
           <button

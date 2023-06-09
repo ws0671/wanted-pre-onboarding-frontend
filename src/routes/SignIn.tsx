@@ -38,7 +38,7 @@ const SignIn = () => {
     }
   };
   return (
-    <div className="relative rounded-lg mt-[100px] mx-auto w-[50vw]   h-[40vh] bg-blue-500">
+    <div className="relative rounded-lg mt-[100px] mx-auto w-[500px]   h-[350px] bg-blue-500">
       <h1 className="hover:text-pink-400 text-white text-center font-bold text-4xl pt-5">
         <Link to="/"> TODO STORY</Link>
       </h1>
