@@ -155,12 +155,22 @@ const ToDo = () => {
       handleInputChange(todo);
     }
   };
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    navigate("/");
+  };
 
   return (
     <div className="relative bg-blue-500 mx-auto w-[500px] mt-[100px] rounded-lg pb-5">
       <h1 className="hover:text-pink-400 text-white text-center font-bold text-4xl pt-5">
         <Link to="/"> TODO STORY</Link>
       </h1>
+      <button
+        onClick={handleLogout}
+        className="absolute right-5 top-6 text-white font-bold"
+      >
+        로그아웃
+      </button>
       <div className="mx-auto mt-[30px] w-[70%]">
         <form className="mb-5" onSubmit={handleSubmit}>
           <input

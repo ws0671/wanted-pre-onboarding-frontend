@@ -5,6 +5,8 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [edisabled, setEdisabled] = useState(true);
   const [pdisabled, setPdisabled] = useState(true);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,15 +19,19 @@ const SignUp = () => {
       if (value.includes("@")) {
         setEmail(value);
         setEdisabled(false);
+        setEmailError("");
       } else {
+        setEmailError("@를 포함하세요");
         setEdisabled(true);
       }
     } else if (name === "password") {
       if (value.length >= 8) {
         setPassword(value);
         setPdisabled(false);
+        setPasswordError("");
       } else {
         setPdisabled(true);
+        setPasswordError("8자리이상 입력하세요");
       }
     }
   };
@@ -55,7 +61,7 @@ const SignUp = () => {
         className=" mt-[50px] flex flex-col items-center justify-center"
         onSubmit={handleSubmit}
       >
-        <div className="w-[70%] flex flex-col space-y-3">
+        <div className="w-[70%] flex flex-col">
           <input
             className=" p-2 placeholder:italic border border-blue-500 rounded-md"
             placeholder="이메일을 입력하세요(@포함)"
@@ -63,6 +69,7 @@ const SignUp = () => {
             data-testid="email-input"
             onChange={handleChange}
           />
+          <span className=" text-red-500 mb-3">{emailError}</span>
           <input
             className=" p-2 placeholder:italic border border-blue-500 rounded-md"
             placeholder="비밀번호를 입력하세요(8자리 이상)"
@@ -70,6 +77,7 @@ const SignUp = () => {
             data-testid="password-input"
             onChange={handleChange}
           />
+          <span className="text-red-500">{passwordError}</span>
         </div>
         <div className="mt-3 italic text-teal-500">
           아이디가 이미 있어요👉
@@ -80,8 +88,8 @@ const SignUp = () => {
         <button
           className={
             edisabled || pdisabled
-              ? "text-teal-500 absolute bottom-[60px] text-xl font-bold "
-              : "text-white absolute bottom-[60px] text-xl font-bold hover:text-yellow-200"
+              ? "text-teal-500 absolute bottom-[30px] text-xl font-bold "
+              : "text-white absolute bottom-[30px] text-xl font-bold hover:text-yellow-200"
           }
           disabled={edisabled || pdisabled}
           data-testid="signup-button"

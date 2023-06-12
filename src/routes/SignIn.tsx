@@ -1,3 +1,4 @@
+import { error, log } from "console";
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 const SignIn = () => {
@@ -30,6 +31,11 @@ const SignIn = () => {
         body: JSON.stringify({ email, password }),
       }
     );
+    console.log(response);
+
+    if (response.status === 401) {
+      alert("이메일 또는 비밀번호가 틀립니다");
+    }
     const token = await response.json();
 
     if (token.access_token) {
@@ -69,7 +75,7 @@ const SignIn = () => {
           </span>
         </div>
         <button
-          className="text-white absolute bottom-[60px] text-xl font-bold hover:text-yellow-200"
+          className="text-white absolute bottom-[30px] text-xl font-bold hover:text-yellow-200"
           data-testid="signin-button"
         >
           로그인
